@@ -1,0 +1,14 @@
+### Get All Columns of a Board
+GET http://localhost:3000/column/board/{boardId}
+
+### Get Column by ID
+GET http://localhost:3000/column/{columnId}
+
+### Create a Column
+POST http://localhost:3000/column/board/{boardId}
+
+### Update a Column
+PATCH http://localhost:3000/column/{columnId}
+
+### Delete a Column
+DELETE http://localhost:3000/column/{columnId}

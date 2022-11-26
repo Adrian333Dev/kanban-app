@@ -1,0 +1,15 @@
+### Get All Boards of a User
+
+GET http://localhost:3000/board/user/{userId}
+
+### Get Board by ID
+GET http://localhost:3000/board/{boardId}
+
+### Create a Board
+POST http://localhost:3000/board/user/{userId}
+
+### Update a Board
+PATCH http://localhost:3000/board/{boardId}
+
+### Delete a Board
+DELETE http://localhost:3000/board/{boardId}
