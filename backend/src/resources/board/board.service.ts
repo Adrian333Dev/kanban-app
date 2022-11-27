@@ -1,26 +1,38 @@
 import { Injectable } from '@nestjs/common';
-import { CreateBoardDto } from './dto/create-board.dto';
-import { UpdateBoardDto } from './dto/update-board.dto';
+import { CreateBoardDto, UpdateBoardDto } from 'src/shared/dtos/board.dto';
+import { PrismaService } from 'src/shared/prisma/prisma.service';
 
 @Injectable()
 export class BoardService {
-  create(createBoardDto: CreateBoardDto) {
-    return 'This action adds a new board';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(userId: number, createBoardDto: CreateBoardDto) {
+    const board = await this.prisma.board.create({
+      data: { ...createBoardDto, userId },
+    });
+    return board;
   }
 
-  findAll() {
-    return `This action returns all board`;
+  async findAllByUser(userId: number) {
+    const boards = await this.prisma.board.findMany({ where: { userId } });
+    return boards;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} board`;
+  findOne(boardId: number) {
+    const board = this.prisma.board.findUnique({ where: { boardId } });
+    return board;
   }
 
-  update(id: number, updateBoardDto: UpdateBoardDto) {
-    return `This action updates a #${id} board`;
+  async update(boardId: number, updateBoardDto: UpdateBoardDto) {
+    const board = await this.prisma.board.update({
+      where: { boardId },
+      data: updateBoardDto,
+    });
+    return board;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} board`;
+  async remove(boardId: number) {
+    const board = await this.prisma.board.delete({ where: { boardId } });
+    return board;
   }
 }

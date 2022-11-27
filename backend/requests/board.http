@@ -1,15 +1,20 @@
 ### Get All Boards of a User
 
-GET http://localhost:3000/board/user/{userId}
+GET http://localhost:3000/board/user/1
 
 ### Get Board by ID
-GET http://localhost:3000/board/{boardId}
+GET http://localhost:3000/board/1
 
 ### Create a Board
-POST http://localhost:3000/board/user/{userId}
+POST http://localhost:3000/board/user/1
+Content-Type: application/json
+
+{
+  "name": "Board 1"
+}
 
 ### Update a Board
-PATCH http://localhost:3000/board/{boardId}
+PATCH http://localhost:3000/board/1
 
 ### Delete a Board
-DELETE http://localhost:3000/board/{boardId}
+DELETE http://localhost:3000/board/1

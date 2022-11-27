@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-  user_id  Int     @id @default(autoincrement())
+  userId   Int     @id @default(autoincrement()) @map("user_id")
   username String  @unique
   email    String  @unique
   password String
@@ -19,18 +19,37 @@ model User {
 }
 
 model Board {
-  board_id Int      @id @default(autoincrement())
-  name     String
-  user_id  Int
-  User     User     @relation(fields: [user_id], references: [user_id])
-  columns  Column[]
+  boardId Int      @id @default(autoincrement()) @map("board_id")
+  name    String
+  userId  Int      @map("user_id")
+  User    User     @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  columns Column[]
 }
 
 model Column {
-  column_id Int    @id @default(autoincrement())
-  name      String
-  order     Int @default(-1)
-  color     String @default("#4a4e69")
-  board_id  Int
-  Board     Board  @relation(fields: [board_id], references: [board_id])
+  columnId Int    @id @default(autoincrement()) @map("column_id")
+  name     String
+  order    Int    @default(-1)
+  color    String @default("#4a4e69")
+  boardId  Int    @map("board_id")
+  Board    Board  @relation(fields: [boardId], references: [boardId], onDelete: Cascade)
+  tasks    Task[]
+}
+
+model Task {
+  taskId      Int       @id @default(autoincrement()) @map("task_id")
+  title       String
+  description String
+  order       Int       @default(-1)
+  columnId    Int       @map("column_id")
+  Column      Column    @relation(fields: [columnId], references: [columnId], onDelete: Cascade)
+  subtasks    Subtask[]
+}
+
+model Subtask {
+  subtaskId Int    @id @default(autoincrement()) @map("subtask_id")
+  title     String
+  order     Int    @default(-1)
+  taskId    Int    @map("task_id")
+  Task      Task   @relation(fields: [taskId], references: [taskId], onDelete: Cascade)
 }

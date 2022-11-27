@@ -6,23 +6,26 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
+import { CreateColumnDto, UpdateColumnDto } from 'src/shared/dtos/column.dto';
 import { ColumnService } from './column.service';
-import { CreateColumnDto } from './dto/create-column.dto';
-import { UpdateColumnDto } from './dto/update-column.dto';
 
 @Controller('column')
 export class ColumnController {
   constructor(private readonly columnService: ColumnService) {}
 
   @Post('board/:boardId')
-  create(@Body() createColumnDto: CreateColumnDto) {
-    return this.columnService.create(createColumnDto);
+  create(
+    @Param('boardId') boardId: string,
+    @Body() createColumnDto: CreateColumnDto,
+  ) {
+    return this.columnService.create(+boardId, createColumnDto);
   }
 
   @Get('board/:boardId')
-  findAll() {
-    return this.columnService.findAll();
+  findAllByBoard(@Param('boardId') boardId: string) {
+    return this.columnService.findAllByBoard(+boardId);
   }
 
   @Get(':columnId')
@@ -36,6 +39,20 @@ export class ColumnController {
     @Body() updateColumnDto: UpdateColumnDto,
   ) {
     return this.columnService.update(+columnId, updateColumnDto);
+  }
+
+  // Drag and drop //TODO: Not working
+  @Patch('move/:columnId')
+  replaceColumn(
+    @Param('columnId') columnId: string,
+    @Query('newOrder') newOrder: string,
+    @Query('boardId') boardId: string,
+  ) {
+    return this.columnService.moveColumn(
+      +columnId,
+      +boardId || null,
+      +newOrder || null,
+    );
   }
 
   @Delete(':columnId')

@@ -7,27 +7,33 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
+import {
+  BoardResponseDto,
+  CreateBoardDto,
+  UpdateBoardDto,
+} from 'src/shared/dtos/board.dto';
 import { BoardService } from './board.service';
-import { CreateBoardDto } from './dto/create-board.dto';
-import { UpdateBoardDto } from './dto/update-board.dto';
 
 @Controller('board')
 export class BoardController {
   constructor(private readonly boardService: BoardService) {}
 
   @Post('user/:userId')
-  create(@Body() createBoardDto: CreateBoardDto) {
-    return this.boardService.create(createBoardDto);
+  create(
+    @Param('userId') userId: string,
+    @Body() createBoardDto: CreateBoardDto,
+  ) {
+    return this.boardService.create(+userId, createBoardDto);
   }
 
   @Get('user/:userId')
-  findAll() {
-    return this.boardService.findAll();
+  findAllByUser(@Param('userId') userId: string): Promise<BoardResponseDto[]> {
+    return this.boardService.findAllByUser(+userId);
   }
 
   @Get(':boardId')
-  findOne(@Param('id') id: string) {
-    return this.boardService.findOne(+id);
+  findOne(@Param('boardId') boardId: string) {
+    return this.boardService.findOne(+boardId);
   }
 
   @Patch(':boardId')

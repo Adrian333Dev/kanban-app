@@ -30,7 +30,7 @@ export class AuthService {
     const user = await this.prisma.user.create({
       data: { email, username, password: hashedPassword },
     });
-    return await this.generateJWT(user.username, user.user_id);
+    return await this.generateJWT(user.username, user.userId);
   }
 
   async signin({ email, password }: SigninParams) {
@@ -38,7 +38,7 @@ export class AuthService {
     if (!user) throw new HttpException('Invalid credentials', 400);
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) throw new HttpException('Invalid credentials', 400);
-    return await this.generateJWT(user.username, user.user_id);
+    return await this.generateJWT(user.username, user.userId);
   }
 
   private async generateJWT(name: string, id: number) {
