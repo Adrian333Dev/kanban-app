@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
+import { IRequestUser, User } from 'src/shared/decorators/user.decorator';
 import {
   BoardResponseDto,
   CreateBoardDto,
@@ -18,16 +19,13 @@ import { BoardService } from './board.service';
 export class BoardController {
   constructor(private readonly boardService: BoardService) {}
 
-  @Post('user/:userId')
-  create(
-    @Param('userId') userId: string,
-    @Body() createBoardDto: CreateBoardDto,
-  ) {
-    return this.boardService.create(+userId, createBoardDto);
+  @Post()
+  create(@Body() createBoardDto: CreateBoardDto, @User() user: IRequestUser) {
+    return this.boardService.create(user.id, createBoardDto);
   }
 
   @Get('user/:userId')
-  findAllByUser(@Param('userId') userId: string): Promise<BoardResponseDto[]> {
+  findAllByUser(@Param('userId') userId: string) {
     return this.boardService.findAllByUser(+userId);
   }
 

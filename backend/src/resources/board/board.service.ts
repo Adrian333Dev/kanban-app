@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateBoardDto, UpdateBoardDto } from 'src/shared/dtos/board.dto';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 
